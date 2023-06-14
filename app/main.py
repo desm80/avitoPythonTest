@@ -5,7 +5,10 @@ import asyncio
 
 from typing import List
 
-SOURCE_URL = 'https://raw.githubusercontent.com/avito-tech/python-trainee-assignment/main/matrix.txt'
+SOURCE_URL = (
+    'https://raw.githubusercontent.com/avito-tech/python-trainee-assignment'
+    '/main/matrix.txt '
+)
 
 
 async def read_file(filename: str) -> str:
@@ -15,24 +18,21 @@ async def read_file(filename: str) -> str:
 
 
 def text_to_matrix(text: str) -> List[List[int]]:
-    result = []
-    result_matrix = []
+    result = [[]]
     len_matrix = int(len(re.findall(r'\b\d+\b', text)) ** 0.5)
     for item in text.split(' '):
         if item.strip().isdigit():
-            if len(result) < len_matrix:
-                result.append(int(item))
+            if len(result[-1]) < len_matrix:
+                result[-1].append(int(item))
             else:
-                result_matrix.append(result)
-                result = []
-                result.append(int(item))
-    result_matrix.append(result)
-    return result_matrix
+                result.append([])
+                result[-1].append(int(item))
+    return result
 
 
 def read_matrix_counterclock_wise(matrix: List[List[int]]) -> List[int]:
     matrix = [list(row) for row in list(zip(*matrix))[::-1]]
-    result = []
+    result, lst_out = [], []
     while True:
         matrix.reverse()
         result.append(matrix[0])
@@ -40,11 +40,10 @@ def read_matrix_counterclock_wise(matrix: List[List[int]]) -> List[int]:
         if len(matrix) == 0:
             break
         matrix = list(zip(*matrix))
-    lst = []
     for row in result:
         for item in row:
-            lst.append(item)
-    return lst
+            lst_out.append(item)
+    return lst_out
 
 
 async def get_matrix(url: str) -> List[int]:
@@ -56,5 +55,3 @@ async def get_matrix(url: str) -> List[int]:
 if __name__ == '__main__':
     loop = asyncio.get_event_loop()
     loop.run_until_complete(get_matrix(SOURCE_URL))
-
-

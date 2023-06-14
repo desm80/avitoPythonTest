@@ -1,8 +1,7 @@
 import asyncio
 
-from main import get_matrix
+from app.main import get_matrix, SOURCE_URL
 
-SOURCE_URL = 'https://raw.githubusercontent.com/avito-tech/python-trainee-assignment/main/matrix.txt'
 TRAVERSAL = [
     10, 50, 90, 130,
     140, 150, 160, 120,
